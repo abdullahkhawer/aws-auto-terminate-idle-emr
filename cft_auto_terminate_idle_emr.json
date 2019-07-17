@@ -17,7 +17,7 @@
       "Type": "String"
     },
     "CloudWatchEventScheduleExpression": {
-      "Description": "CloudWatch Event Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or CRON Expression (e.g., cron(0/5 * * * ? *)).",
+      "Description": "CloudWatch Event Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)).",
       "Type": "String"
     }
   },
