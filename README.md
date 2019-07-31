@@ -1,10 +1,11 @@
-# Auto Terminate Idle AWS EMR Clusters Framework v1.0
+# AWS Auto Terminate Idle AWS EMR Clusters Framework
 
 -   Founder: Abdullah Khawer (LinkedIn: https://www.linkedin.com/in/abdullah-khawer/)
+-   Version: v1.0
 
 ## Introduction
 
-Auto Terminate Idle AWS EMR Clusters Framework v1.0 is an AWS based solution using AWS CloudWatch and AWS Lambda using a Python script that is using Boto3 to terminate AWS EMR clusters that have been idle for a specified period of time.
+AWS Auto Terminate Idle AWS EMR Clusters Framework v1.0 is an AWS based solution using AWS CloudWatch and AWS Lambda using a Python script that is using Boto3 to terminate AWS EMR clusters that have been idle for a specified period of time.
 
 You specify the maximum idle time threshold and AWS CloudWatch event/rule triggers an AWS Lambda function that queries all AWS EMR clusters in WAITING state and for each, compares the current time with AWS EMR cluster's ready time in case of no EMR steps added so far or compares the current time with AWS EMR cluster's last step's end time. If the threshold has been compromised, the AWS EMR will be terminated after removing termination protection if enabled. If not, it will skip that AWS EMR cluster.
 
@@ -34,7 +35,7 @@ Following are the steps to successfully deploy and use this framework:
 -   Compress *auto_terminate_idle_emr.py* file in zip format and put it on AWS S3 bucket.
 -   Login to AWS console with IAM user credentials having the required admin privileges to create resources via AWS CloudFormation.
 -   Go to AWS CloudFormation and choose to *Create Stack*.
--   Under *Choose a template* Either upload *cft_auto_terminate_idle_emr.json* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
+-   Under *Choose a template*, either upload *cft_auto_terminate_idle_emr.json* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
 -   Enter any suitable *Stack Name*.
 -   Enter *CloudWatchEventScheduleExpression* which is AWS CloudWatch Event's Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)) which will decide how ofter to trigger AWS Lambda function that does the actual job.
 -   Enter *LambdaCodeS3Bucket* which is AWS S3 Bucket Name having AWS Lambda Function Code (e.g., my-bucket).
