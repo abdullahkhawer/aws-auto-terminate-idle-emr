@@ -85,7 +85,7 @@
             "Ref": "LambdaCodeS3BucketKey"
           }
         },
-        "Handler": "auto_terminate_idle_emr.lambda_handler",
+        "Handler": "aws_auto_terminate_idle_emr.lambda_handler",
         "Role": {
           "Fn::GetAtt": ["TerminateIdleEMRLambdaIAMRole", "Arn"]
         },

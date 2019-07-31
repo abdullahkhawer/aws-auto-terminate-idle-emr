@@ -32,14 +32,14 @@ Following are the components used in this framework:
 
 Following are the steps to successfully deploy and use this framework:
 -   Clone this repository from the master branch.
--   Compress *auto_terminate_idle_emr.py* file in zip format and put it on AWS S3 bucket.
+-   Compress *aws_auto_terminate_idle_emr.py* file in zip format and put it on AWS S3 bucket.
 -   Login to AWS console with IAM user credentials having the required admin privileges to create resources via AWS CloudFormation.
 -   Go to AWS CloudFormation and choose to *Create Stack*.
--   Under *Choose a template*, either upload *cft_auto_terminate_idle_emr.json* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
+-   Under *Choose a template*, either upload *aws_auto_terminate_idle_emr_cft.json* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
 -   Enter any suitable *Stack Name*.
 -   Enter *CloudWatchEventScheduleExpression* which is AWS CloudWatch Event's Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)) which will decide how ofter to trigger AWS Lambda function that does the actual job.
 -   Enter *LambdaCodeS3Bucket* which is AWS S3 Bucket Name having AWS Lambda Function Code (e.g., my-bucket).
--   Enter *LambdaCodeS3BucketKey* which is AWS S3 Bucket Key having AWS Lambda Function Code (e.g., lambda/code/auto_terminate_idle_emr.zip).
+-   Enter *LambdaCodeS3BucketKey* which is AWS S3 Bucket Key having AWS Lambda Function Code (e.g., lambda/code/aws_auto_terminate_idle_emr.zip).
 -   Enter *MaxIdleTimeInMinutes* which is Maximum Idle Time in Minutes for Any AWS EMR Cluster.
 -   Enter suitable Tags if required.
 -   Under *Review*, select *I acknowledge that AWS CloudFormation might create IAM resources with custom names.* and click create.
