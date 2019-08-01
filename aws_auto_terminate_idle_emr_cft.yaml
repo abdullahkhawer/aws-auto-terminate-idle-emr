@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS CloudFormation Template to deploy the framework of Automatic Termination
+  of Idle EMR Clusters by creating resources like CloudWatch event, IAM role and
+  Lambda function. You will be billed for the AWS resources used if you create a
+  stack from this template.
+Parameters:
+  MaxIdleTimeInMinutes:
+    Description: Maximum Idle Time in Minutes for Any EMR Cluster.
+    Type: Number
+    MinValue: '1'
+    ConstraintDescription: Must be greater than 0.
+  LambdaCodeS3Bucket:
+    Description: S3 Bucket Name having Lambda Function Code.
+    Type: String
+  LambdaCodeS3BucketKey:
+    Description: S3 Bucket Key having Lambda Function Code.
+    Type: String
+  CloudWatchEventScheduleExpression:
+    Description: >-
+      CloudWatch Event Schedule Expression in the form of either Rate Function
+      (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)).
+    Type: String
+Resources:
+  TerminateIdleEMRLambdaIAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: iam-role-terminate-idle-emr
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: TerminateIdleEMRLambdaFunctionPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'elasticmapreduce:ListSteps'
+                  - 'elasticmapreduce:ListClusters'
+                  - 'elasticmapreduce:SetTerminationProtection'
+                  - 'elasticmapreduce:TerminateJobFlows'
+                  - 'logs:CreateLogStream'
+                  - 'logs:CreateLogGroup'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+  TerminateIdleEMRLambdaFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: lambda-function-terminate-idle-emr
+      Description: Lambda Function based on Python 3.7 to Terminate Idle EMR Clusters.
+      Environment:
+        Variables:
+          MAX_IDLE_TIME_IN_MINUTES: !Ref MaxIdleTimeInMinutes
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3BucketKey
+      Handler: aws_auto_terminate_idle_emr.lambda_handler
+      Role: !GetAtt 
+        - TerminateIdleEMRLambdaIAMRole
+        - Arn
+      Runtime: python3.7
+      Timeout: 900
+      MemorySize: 128
+      Tags:
+        - Key: Name
+          Value: terminate-idle-emr-lambda-function
+  TerminateIdleEMRCloudWatchEventRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      Name: cw-scheduled-trigger-terminate-idle-emr
+      Description: >-
+        CloudWatch Event Triggered on Schduled Basis to Trigger Idle EMR
+        Clusters Termination Lambda Function.
+      ScheduleExpression: !Ref CloudWatchEventScheduleExpression
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt 
+            - TerminateIdleEMRLambdaFunction
+            - Arn
+          Id: TargetTerminateIdleEMR
+  TerminateIdleEMRLambdaInvokePermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !GetAtt 
+        - TerminateIdleEMRLambdaFunction
+        - Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt 
+        - TerminateIdleEMRCloudWatchEventRule
+        - Arn
+Outputs:
+  TerminateIdleEMRLambdaFunctionARN:
+    Value: !GetAtt 
+      - TerminateIdleEMRLambdaFunction
+      - Arn
+    Description: ARN for Terminate Idle EMR Lambda Function.
+  TerminateIdleEMRCloudWatchEventRuleARN:
+    Value: !GetAtt 
+      - TerminateIdleEMRCloudWatchEventRule
+      - Arn
+    Description: ARN for Terminate Idle EMR CloudWatch Event Rule.

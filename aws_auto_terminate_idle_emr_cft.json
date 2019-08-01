@@ -65,7 +65,6 @@
       }
     },
     "TerminateIdleEMRLambdaFunction": {
-      "DependsOn": "TerminateIdleEMRLambdaIAMRole",
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "FunctionName": "lambda-function-terminate-idle-emr",
@@ -90,7 +89,7 @@
           "Fn::GetAtt": ["TerminateIdleEMRLambdaIAMRole", "Arn"]
         },
         "Runtime": "python3.7",
-        "Timeout": "900",
+        "Timeout": 900,
         "MemorySize": 128,
         "Tags": [
           {
@@ -101,7 +100,6 @@
       }
     },
     "TerminateIdleEMRCloudWatchEventRule": {
-      "DependsOn": "TerminateIdleEMRLambdaFunction",
       "Type": "AWS::Events::Rule",
       "Properties": {
         "Name": "cw-scheduled-trigger-terminate-idle-emr",
@@ -121,7 +119,6 @@
       }
     },
     "TerminateIdleEMRLambdaInvokePermission": {
-      "DependsOn": "TerminateIdleEMRCloudWatchEventRule",
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {

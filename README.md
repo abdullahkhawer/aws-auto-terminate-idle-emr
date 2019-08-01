@@ -22,7 +22,7 @@ AWS Lambda function is using Python 3.7 as its runtime environment.
 Following are the components used in this framework:
 -   Python script having the main logic developed in Python 3.7.
 -   Boto3 for AWS resources access in Python.
--   AWS CloudFormation template for stack deployment.
+-   AWS CloudFormation template (both in JSON and YAML) for stack deployment.
 -   AWS CloudWatch event for scheduling trigger.
 -   AWS Lambda function to execute the main Python script.
 -   AWS IAM role used by the Lambda function with least privileges.
@@ -35,7 +35,7 @@ Following are the steps to successfully deploy and use this framework:
 -   Compress *aws_auto_terminate_idle_emr.py* file in zip format and put it on AWS S3 bucket.
 -   Login to AWS console with IAM user credentials having the required admin privileges to create resources via AWS CloudFormation.
 -   Go to AWS CloudFormation and choose to *Create Stack*.
--   Under *Choose a template*, either upload *aws_auto_terminate_idle_emr_cft.json* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
+-   Under *Choose a template*, either upload *aws_auto_terminate_idle_emr_cft.json* or *aws_auto_terminate_idle_emr_cft.yaml* from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
 -   Enter any suitable *Stack Name*.
 -   Enter *CloudWatchEventScheduleExpression* which is AWS CloudWatch Event's Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)) which will decide how ofter to trigger AWS Lambda function that does the actual job.
 -   Enter *LambdaCodeS3Bucket* which is AWS S3 Bucket Name having AWS Lambda Function Code (e.g., my-bucket).
