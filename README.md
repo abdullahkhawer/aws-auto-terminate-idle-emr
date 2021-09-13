@@ -1,7 +1,7 @@
 # AWS Auto Terminate Idle AWS EMR Clusters Framework
 
 -   Founder: Abdullah Khawer (LinkedIn: https://www.linkedin.com/in/abdullah-khawer/)
--   Version: v1.0
+-   Version: v1.1.1
 
 ## Introduction
 
@@ -37,7 +37,7 @@ Following are the steps to successfully deploy and use this framework:
 -   Go to AWS CloudFormation and choose to **Create Stack**.
 -   Under **Choose a template**, either upload **aws_auto_terminate_idle_emr_cft.json** or **aws_auto_terminate_idle_emr_cft.yaml** from here or put it on AWS S3 bucket and enter AWS S3 URL for that file.
 -   Enter any suitable **Stack Name**.
--   Enter **CloudWatchEventScheduleExpression** which is AWS CloudWatch Event's Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)) which will decide how ofter to trigger AWS Lambda function that does the actual job.
+-   Enter **CloudWatchEventScheduleExpression** which is AWS CloudWatch Event's Schedule Expression in the form of either Rate Function (e.g., rate(5 minutes)) or Cron Expression (e.g., cron(0/5 * * * ? *)) which will decide how often to trigger AWS Lambda function that does the actual job.
 -   Enter **LambdaCodeS3Bucket** which is AWS S3 Bucket Name having AWS Lambda Function Code (e.g., my-bucket).
 -   Enter **LambdaCodeS3BucketKey** which is AWS S3 Bucket Key having AWS Lambda Function Code (e.g., lambda/code/aws_auto_terminate_idle_emr.zip).
 -   Enter **MaxIdleTimeInMinutes** which is Maximum Idle Time in Minutes for Any AWS EMR Cluster.
