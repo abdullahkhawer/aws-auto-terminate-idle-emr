@@ -5,7 +5,7 @@
 
 ## Introduction
 
-AWS Auto Terminate Idle AWS EMR Clusters Framework is an AWS based solution using AWS CloudWatch and AWS Lambda using a Python script that is using Boto3 to terminate AWS EMR clusters that have been idle for a specified period of time.
+AWS Auto Terminate Idle AWS EMR Clusters Framework is an AWS based solution using AWS CloudWatch and AWS Lambda based on Python to automatically terminate AWS EMR clusters that have been idle for a specified period of time.
 
 You specify the maximum idle time threshold and AWS CloudWatch event/rule triggers an AWS Lambda function that queries all AWS EMR clusters in WAITING state and for each, compares the current time with AWS EMR cluster's ready time in case of no EMR steps added so far or compares the current time with AWS EMR cluster's last step's end time. If the threshold has been compromised, the AWS EMR will be terminated after removing termination protection if enabled. If not, it will skip that AWS EMR cluster.
 
